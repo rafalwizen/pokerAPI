@@ -1,7 +1,10 @@
 package wizen.rafal.poker.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.Map.Entry;
 
 import org.springframework.stereotype.Service;
 
@@ -30,7 +33,7 @@ public class WinServiceImpl implements WinService {
 	
 	// methods for check each possible variant
 	
-	private boolean hasStraightFlush(ArrayList<Card> cards) {
+	private boolean checkForStraightFlush(ArrayList<Card> cards) {
 		
 		
 //		for(Card card : cards) {
@@ -39,35 +42,53 @@ public class WinServiceImpl implements WinService {
 		return false;
 	}
 	
-	private boolean hasFourOfKind(ArrayList<Card> cards) {
+	private boolean checkForFourOfKind(ArrayList<Card> cards) {
 		return false;
 	}
 	
-	private boolean hasFullHouse(ArrayList<Card> cards) {
+	private boolean checkForFullHouse(ArrayList<Card> cards) {
 		return false;
 	}
 	
-	public boolean hasFlush(ArrayList<Card> cards) {
-		HashMap<Character, Integer> colors = new HashMap<Character, Integer>();
+	public int[] checkForFlush(ArrayList<Card> cards) {
+		HashMap<Character, ArrayList<Card>> colors = new HashMap<Character, ArrayList<Card>>();
 		for(Card card : cards) {
-			colors.merge(card.getSuit(), 1, Integer::sum);
+			if(colors.get(card.getSuit())==null) {
+				colors.put(card.getSuit(), new ArrayList<Card>());
+			}
+			colors.get(card.getSuit()).add(card);
 		}
-		return (colors.containsValue(5));
+		for (Entry<Character, ArrayList<Card>> temp : colors.entrySet()) {
+		    ArrayList<Card> values = temp.getValue();
+		    if(values.size()>=5) {
+		    	Collections.sort(values);
+		    	if(values.get(values.size()-1).isAce()) {
+		    		values.get(values.size()-1).setValue(14);
+		    		Collections.sort(values);
+		    	}		    	
+		    	// 6 is value for flush, also add 5 highest cards
+		    	int[] result = {6, values.get(0).getValue(),values.get(1).getValue(),
+		    					values.get(2).getValue(),values.get(3).getValue(),values.get(4).getValue()};
+		    	return result;
+		    }
+		}
+		int[] result = {0};
+		return result;
 	}
 	
-	private boolean hasStraight(ArrayList<Card> cards) {
+	private boolean checkForStraight(ArrayList<Card> cards) {
 		return false;
 	}
 	
-	private boolean hasThreeOfAKind(ArrayList<Card> cards) {
+	private boolean checkForThreeOfAKind(ArrayList<Card> cards) {
 		return false;
 	}
 	
-	private boolean hasTwoPairs(ArrayList<Card> cards) {
+	private boolean checkForTwoPairs(ArrayList<Card> cards) {
 		return false;
 	}
 	
-	private boolean hasPair(ArrayList<Card> cards) {
+	private boolean checkForPair(ArrayList<Card> cards) {
 		return false;
 	}
 }
