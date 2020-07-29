@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import wizen.rafal.poker.model.Card;
 import wizen.rafal.poker.service.WinServiceImpl;
 
-class HasFlushTest {
+class CheckForFlush {
 
 	@Test
 	void hasFlush_fiveHeartCards_True() {

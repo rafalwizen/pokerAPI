@@ -32,34 +32,56 @@ public class WinServiceImpl implements WinService {
 	}
 	
 	// methods for check each possible variant
+	// kicker(s) - is a card in a hand that does not itself take part in determining the rank of the hand,
+	// but that may be used to break ties between hands of the same rank
 	
-	private boolean checkForStraightFlush(ArrayList<Card> cards) {
+	private int[] checkForStraightFlush(ArrayList<Card> cards) {
 		
 		
-//		for(Card card : cards) {
-//			card.getSuit();
-//		}
-		return false;
+		int[] result = {0};
+		return result;
 	}
 	
-	private boolean checkForFourOfKind(ArrayList<Card> cards) {
-		return false;
+	public int[] checkForFourOfKind(ArrayList<Card> cards) {
+		HashMap<Integer, Integer> hand = new HashMap<Integer, Integer>();
+		for(Card card : cards) {
+			hand.merge(card.getValue(), 1, Integer::sum);
+		}
+		if(hand.containsValue(4)) {
+			int valueOfFourOfKind = 0;
+			int kicker = 0;
+			for(Entry<Integer,Integer> entry : hand.entrySet()) {
+				if(entry.getValue()==4) {
+					valueOfFourOfKind = entry.getKey();
+				} else {
+					kicker = (kicker >= entry.getKey())? kicker : entry.getKey();
+				}				
+			}
+			int[] result = {8, valueOfFourOfKind, kicker};
+			return result;
+		}
+		
+		int[] result = {0};
+		return result;
 	}
 	
-	private boolean checkForFullHouse(ArrayList<Card> cards) {
-		return false;
+	private int[] checkForFullHouse(ArrayList<Card> cards) {
+		
+		
+		int[] result = {0};
+		return result;
 	}
 	
 	public int[] checkForFlush(ArrayList<Card> cards) {
-		HashMap<Character, ArrayList<Card>> colors = new HashMap<Character, ArrayList<Card>>();
+		HashMap<Character, ArrayList<Card>> hand = new HashMap<Character, ArrayList<Card>>();
 		for(Card card : cards) {
-			if(colors.get(card.getSuit())==null) {
-				colors.put(card.getSuit(), new ArrayList<Card>());
+			if(hand.get(card.getSuit())==null) {
+				hand.put(card.getSuit(), new ArrayList<Card>());
 			}
-			colors.get(card.getSuit()).add(card);
+			hand.get(card.getSuit()).add(card);
 		}
-		for (Entry<Character, ArrayList<Card>> temp : colors.entrySet()) {
-		    ArrayList<Card> values = temp.getValue();
+		for (Entry<Character, ArrayList<Card>> entry : hand.entrySet()) {
+		    ArrayList<Card> values = entry.getValue();
 		    if(values.size()>=5) {
 		    	Collections.sort(values);
 		    	if(values.get(values.size()-1).isAce()) {
@@ -76,19 +98,31 @@ public class WinServiceImpl implements WinService {
 		return result;
 	}
 	
-	private boolean checkForStraight(ArrayList<Card> cards) {
-		return false;
+	private int[] checkForStraight(ArrayList<Card> cards) {
+		
+		
+		int[] result = {0};
+		return result;
 	}
 	
-	private boolean checkForThreeOfAKind(ArrayList<Card> cards) {
-		return false;
+	private int[] checkForThreeOfAKind(ArrayList<Card> cards) {
+		
+		
+		int[] result = {0};
+		return result;
 	}
 	
-	private boolean checkForTwoPairs(ArrayList<Card> cards) {
-		return false;
+	private int[] checkForTwoPairs(ArrayList<Card> cards) {
+		
+		
+		int[] result = {0};
+		return result;
 	}
 	
-	private boolean checkForPair(ArrayList<Card> cards) {
-		return false;
+	private int[] checkForPair(ArrayList<Card> cards) {
+		
+		
+		int[] result = {0};
+		return result;
 	}
 }
