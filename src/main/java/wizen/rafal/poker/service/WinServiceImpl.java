@@ -131,9 +131,35 @@ public class WinServiceImpl implements WinService {
 		return result;
 	}
 	
-	private int[] checkForTwoPairs(ArrayList<Card> cards) {
-		
-		
+	public int[] checkForTwoPairs(ArrayList<Card> cards) {
+		HashMap<Integer, Integer> hand = new HashMap<Integer, Integer>();
+		for(Card card : cards) {
+			hand.merge(card.getValue(), 1, Integer::sum);
+		}
+		int pair1 = 0;
+		int pair2 = 0; // always lower than pair1
+		int pair3 = 0; // possible only in some cases
+		int kicker = 0;
+		for(Entry<Integer, Integer> entry : hand.entrySet()) {
+			if(entry.getValue()==2) {
+				if(pair1 < entry.getKey()) {
+					pair3 = pair2;
+					pair2 = pair1;
+					pair1 = entry.getKey();
+				} else if(pair2 < entry.getKey()) {
+					pair3 = pair2;
+					pair2 = entry.getKey();
+				} 
+			} else {
+				kicker = entry.getKey();
+			}
+		}
+		kicker = (kicker > pair3) ? kicker : pair3;
+		if(pair2 != 0) {
+			// 3 is value for two pairs, also add kicker
+			int[] result = {3, pair1, pair2, kicker};
+			return result;
+		}
 		int[] result = {0};
 		return result;
 	}
