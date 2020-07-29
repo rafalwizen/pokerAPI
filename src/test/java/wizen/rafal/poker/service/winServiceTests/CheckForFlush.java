@@ -72,8 +72,8 @@ class CheckForFlush {
 	void hasFlush_fiveSpadesCardsAndHighestAce_True() {
 		WinServiceImpl test = new WinServiceImpl();
 		ArrayList<Card> cards = new ArrayList<Card>();
-		cards.add(new Card(1, 'S'));
-		cards.add(new Card(1, 'C'));
+		cards.add(new Card(14, 'S'));
+		cards.add(new Card(14, 'C'));
 		cards.add(new Card(10, 'S'));
 		cards.add(new Card(11, 'S'));
 		cards.add(new Card(2, 'S'));

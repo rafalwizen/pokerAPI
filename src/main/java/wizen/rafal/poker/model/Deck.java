@@ -38,7 +38,7 @@ public class Deck {
 	
 	public void newDeck() {
 		deck = new ArrayList<Card>();
-		for(int i = 1; i <= 13; i++) {
+		for(int i = 2; i <= 14; i++) {
 			deck.add(new Card(i , 'H'));
 			deck.add(new Card(i , 'S'));
 			deck.add(new Card(i , 'D'));

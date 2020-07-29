@@ -9,14 +9,14 @@ import lombok.ToString;
 @ToString
 public class Card implements Comparable<Card> {
 
-	private int value; // 1-13, 1 - Ace, 11 - Jack, 12 - Queen, 13 - King
+	private int value; // 2-10 numeric cards,  11 - Jack, 12 - Queen, 13 - King, 14 - Ace
 	private char suit; // H - heart, S - spades, D - diamonds, C - clubs
 	private boolean isAce;
 	
 	public Card(int value, char suit) {
 		this.value = value;
 		this.suit = suit;
-		this.isAce = (value == 1);
+		this.isAce = (value == 14);
 	}
 
 	@Override

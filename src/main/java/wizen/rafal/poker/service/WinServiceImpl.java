@@ -1,7 +1,6 @@
 package wizen.rafal.poker.service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map.Entry;
@@ -42,22 +41,23 @@ public class WinServiceImpl implements WinService {
 		return result;
 	}
 	
-	public int[] checkForFourOfKind(ArrayList<Card> cards) {
+	public int[] checkForFourOfAKind(ArrayList<Card> cards) {
 		HashMap<Integer, Integer> hand = new HashMap<Integer, Integer>();
 		for(Card card : cards) {
 			hand.merge(card.getValue(), 1, Integer::sum);
 		}
 		if(hand.containsValue(4)) {
-			int valueOfFourOfKind = 0;
+			int valueOfFourOfAKind = 0;
 			int kicker = 0;
 			for(Entry<Integer,Integer> entry : hand.entrySet()) {
 				if(entry.getValue()==4) {
-					valueOfFourOfKind = entry.getKey();
+					valueOfFourOfAKind = entry.getKey();
 				} else {
 					kicker = (kicker >= entry.getKey())? kicker : entry.getKey();
 				}				
 			}
-			int[] result = {8, valueOfFourOfKind, kicker};
+			// 8 is value for four of a kind, also add 1 kicker
+			int[] result = {8, valueOfFourOfAKind, kicker};
 			return result;
 		}
 		
@@ -83,11 +83,7 @@ public class WinServiceImpl implements WinService {
 		for (Entry<Character, ArrayList<Card>> entry : hand.entrySet()) {
 		    ArrayList<Card> values = entry.getValue();
 		    if(values.size()>=5) {
-		    	Collections.sort(values);
-		    	if(values.get(values.size()-1).isAce()) {
-		    		values.get(values.size()-1).setValue(14);
-		    		Collections.sort(values);
-		    	}		    	
+		    	Collections.sort(values);		    	
 		    	// 6 is value for flush, also add 5 highest cards
 		    	int[] result = {6, values.get(0).getValue(),values.get(1).getValue(),
 		    					values.get(2).getValue(),values.get(3).getValue(),values.get(4).getValue()};
@@ -105,8 +101,31 @@ public class WinServiceImpl implements WinService {
 		return result;
 	}
 	
-	private int[] checkForThreeOfAKind(ArrayList<Card> cards) {
-		
+	public int[] checkForThreeOfAKind(ArrayList<Card> cards) {
+		HashMap<Integer, Integer> hand = new HashMap<Integer, Integer>();
+		for(Card card : cards) {
+			hand.merge(card.getValue(), 1, Integer::sum);
+		}
+		if(hand.containsValue(3)) {
+			int valueOfThreeOfAKind = 0;
+			int kicker1 = 0;
+			int kicker2 = 0; // always lower than kicker1
+			for(Entry<Integer,Integer> entry : hand.entrySet()) {
+				if(entry.getValue()==3) {
+					valueOfThreeOfAKind = (valueOfThreeOfAKind > entry.getKey()) ? valueOfThreeOfAKind : entry.getKey();
+				} else {
+					if(kicker1<entry.getKey()) {
+						kicker2 = kicker1;
+						kicker1 = entry.getKey();
+					} else if(kicker2<entry.getKey()) {
+						kicker2 = entry.getKey();
+					}
+				}
+			}
+			// 4 is value for three of a kind, also add 2 kickers
+			int[] result = {4, valueOfThreeOfAKind, kicker1, kicker2};
+			return result;
+		}
 		
 		int[] result = {0};
 		return result;

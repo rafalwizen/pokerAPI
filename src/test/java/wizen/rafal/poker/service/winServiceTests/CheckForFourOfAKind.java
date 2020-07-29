@@ -9,10 +9,10 @@ import org.junit.jupiter.api.Test;
 import wizen.rafal.poker.model.Card;
 import wizen.rafal.poker.service.WinServiceImpl;
 
-class CheckForFourOfKind {
+class CheckForFourOfAKind {
 
 	@Test
-	void hasFourOfKind_four2andkicker12_True() {
+	void hasFourOfAKind_four2andKicker12_True() {
 		WinServiceImpl test = new WinServiceImpl();
 		ArrayList<Card> cards = new ArrayList<Card>();
 		cards.add(new Card(8, 'H'));
@@ -22,7 +22,7 @@ class CheckForFourOfKind {
 		cards.add(new Card(2, 'D'));
 		cards.add(new Card(3, 'H'));
 		cards.add(new Card(12, 'C'));
-		int[] output = test.checkForFourOfKind(cards);
+		int[] output = test.checkForFourOfAKind(cards);
 		int[] expected = {8, 2, 12};
 		assertEquals(expected[0], output[0]);
 		assertEquals(expected[1], output[1]);
@@ -30,17 +30,17 @@ class CheckForFourOfKind {
 	}
 	
 	@Test
-	void hasFourOfKind_noSame4_False() {
+	void hasFourOfAKind_noSame4_False() {
 		WinServiceImpl test = new WinServiceImpl();
 		ArrayList<Card> cards = new ArrayList<Card>();
 		cards.add(new Card(8, 'H'));
 		cards.add(new Card(2, 'H'));
-		cards.add(new Card(1, 'C'));
+		cards.add(new Card(14, 'C'));
 		cards.add(new Card(2, 'S'));
 		cards.add(new Card(2, 'D'));
 		cards.add(new Card(3, 'H'));
 		cards.add(new Card(12, 'C'));
-		int[] output = test.checkForFourOfKind(cards);
+		int[] output = test.checkForFourOfAKind(cards);
 		assertEquals(0, output[0]);
 	}
 
