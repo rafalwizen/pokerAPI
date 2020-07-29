@@ -12,7 +12,7 @@ import wizen.rafal.poker.service.WinServiceImpl;
 class CheckForThreeOfAKind {
 
 	@Test
-	void hasThreeOfAKind_three2andKicker12and8_True() {
+	void checkForThreeOfAKind_three2andKicker12and8_True() {
 		WinServiceImpl test = new WinServiceImpl();
 		ArrayList<Card> cards = new ArrayList<Card>();
 		cards.add(new Card(8, 'H'));
@@ -31,7 +31,7 @@ class CheckForThreeOfAKind {
 	}
 	
 	@Test
-	void hasThreeOfAKind_three10andKicker11and3_True() {
+	void checkForThreeOfAKind_three10andKicker11and3_True() {
 		WinServiceImpl test = new WinServiceImpl();
 		ArrayList<Card> cards = new ArrayList<Card>();
 		cards.add(new Card(10, 'H'));
@@ -50,7 +50,7 @@ class CheckForThreeOfAKind {
 	}
 
 	@Test
-	void hasThreeOfAKind_three8andKickerAceAnd7_True() {
+	void checkForThreeOfAKind_three8andKickerAceAnd7_True() {
 		WinServiceImpl test = new WinServiceImpl();
 		ArrayList<Card> cards = new ArrayList<Card>();
 		cards.add(new Card(8, 'H'));
@@ -69,7 +69,7 @@ class CheckForThreeOfAKind {
 	}
 	
 	@Test
-	void hasThreeOfAKind_noSame3_False() {
+	void checkForThreeOfAKind_noSame3_False() {
 		WinServiceImpl test = new WinServiceImpl();
 		ArrayList<Card> cards = new ArrayList<Card>();
 		cards.add(new Card(8, 'H'));

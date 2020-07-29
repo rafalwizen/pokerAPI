@@ -12,7 +12,7 @@ import wizen.rafal.poker.service.WinServiceImpl;
 class CheckForFourOfAKind {
 
 	@Test
-	void hasFourOfAKind_four2andKicker12_True() {
+	void checkForFourOfAKind_four2andKicker12_True() {
 		WinServiceImpl test = new WinServiceImpl();
 		ArrayList<Card> cards = new ArrayList<Card>();
 		cards.add(new Card(8, 'H'));
@@ -30,7 +30,7 @@ class CheckForFourOfAKind {
 	}
 	
 	@Test
-	void hasFourOfAKind_noSame4_False() {
+	void checkForFourOfAKind_noSame4_False() {
 		WinServiceImpl test = new WinServiceImpl();
 		ArrayList<Card> cards = new ArrayList<Card>();
 		cards.add(new Card(8, 'H'));

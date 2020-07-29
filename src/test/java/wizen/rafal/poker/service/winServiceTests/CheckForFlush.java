@@ -12,7 +12,7 @@ import wizen.rafal.poker.service.WinServiceImpl;
 class CheckForFlush {
 
 	@Test
-	void hasFlush_fiveHeartCards_True() {
+	void checkForFlush_fiveHeartCards_True() {
 		WinServiceImpl test = new WinServiceImpl();
 		ArrayList<Card> cards = new ArrayList<Card>();
 		cards.add(new Card(8, 'H'));
@@ -33,7 +33,7 @@ class CheckForFlush {
 	}
 
 	@Test
-	void hasFlush_noColorHasFive_False() {
+	void checkForFlush_noColorHasFive_False() {
 		WinServiceImpl test = new WinServiceImpl();
 		ArrayList<Card> cards = new ArrayList<Card>();
 		cards.add(new Card(8, 'S'));
@@ -48,7 +48,7 @@ class CheckForFlush {
 	}
 	
 	@Test
-	void hasFlush_sevenClubCards_True() {
+	void checkForFlush_sevenClubCards_True() {
 		WinServiceImpl test = new WinServiceImpl();
 		ArrayList<Card> cards = new ArrayList<Card>();
 		cards.add(new Card(8, 'C'));
@@ -69,7 +69,7 @@ class CheckForFlush {
 	}
 	
 	@Test
-	void hasFlush_fiveSpadesCardsAndHighestAce_True() {
+	void checkForFlush_fiveSpadesCardsAndHighestAce_True() {
 		WinServiceImpl test = new WinServiceImpl();
 		ArrayList<Card> cards = new ArrayList<Card>();
 		cards.add(new Card(14, 'S'));

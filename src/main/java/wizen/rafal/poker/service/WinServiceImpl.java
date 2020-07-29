@@ -1,6 +1,8 @@
 package wizen.rafal.poker.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map.Entry;
@@ -49,7 +51,7 @@ public class WinServiceImpl implements WinService {
 		if(hand.containsValue(4)) {
 			int valueOfFourOfAKind = 0;
 			int kicker = 0;
-			for(Entry<Integer,Integer> entry : hand.entrySet()) {
+			for(Entry<Integer, Integer> entry : hand.entrySet()) {
 				if(entry.getValue()==4) {
 					valueOfFourOfAKind = entry.getKey();
 				} else {
@@ -110,7 +112,7 @@ public class WinServiceImpl implements WinService {
 			int valueOfThreeOfAKind = 0;
 			int kicker1 = 0;
 			int kicker2 = 0; // always lower than kicker1
-			for(Entry<Integer,Integer> entry : hand.entrySet()) {
+			for(Entry<Integer, Integer> entry : hand.entrySet()) {
 				if(entry.getValue()==3) {
 					valueOfThreeOfAKind = (valueOfThreeOfAKind > entry.getKey()) ? valueOfThreeOfAKind : entry.getKey();
 				} else {
@@ -164,10 +166,44 @@ public class WinServiceImpl implements WinService {
 		return result;
 	}
 	
-	private int[] checkForPair(ArrayList<Card> cards) {
-		
-		
+	public int[] checkForOnePair(ArrayList<Card> cards) {
+		HashMap<Integer, Integer> hand = new HashMap<Integer, Integer>();
+		for(Card card : cards) {
+			hand.merge(card.getValue(), 1, Integer::sum);
+		}
+		int pair = 0;
+		int kicker1 = 0;
+		int kicker2 = 0; // always lower or equal to kicker1
+		int kicker3 = 0; // always lower or equal to kicker2
+		for(Entry<Integer, Integer> entry : hand.entrySet()) {
+			if(entry.getValue()==2) {
+				pair = entry.getKey();
+			} else if (kicker1 < entry.getKey()){
+				kicker3 = kicker2;
+				kicker2 = kicker1;
+				kicker1 = entry.getKey();
+			} else if(kicker2 < entry.getKey()) {
+				kicker3 = kicker2;
+				kicker2 = entry.getKey();
+			} else if (kicker3 < entry.getKey()) {
+				kicker3 = entry.getKey();
+			}
+		}
+		if(pair!=0) {
+			// 2 is value for pair, also add 3 kickers
+			int[] result = {2, pair, kicker1, kicker2, kicker3};
+			return result;
+		}
 		int[] result = {0};
+		return result;
+	}
+	
+	public int[] checkForHeighestCard(ArrayList<Card> cards) {
+		Collections.sort(cards);
+		// 1 is value for highest pair
+		int[] result = {1, cards.get(0).getValue(), cards.get(1).getValue(), cards.get(2).getValue(),
+						   cards.get(3).getValue(), cards.get(4).getValue()};
+
 		return result;
 	}
 }

@@ -12,7 +12,7 @@ import wizen.rafal.poker.service.WinServiceImpl;
 class CheckForTwoPairs {
 
 	@Test
-	void hasTwoPairs_two7and4and8asKicker_True() {
+	void checkForTwoPairs_two7and4and8asKicker_True() {
 		WinServiceImpl test = new WinServiceImpl();
 		ArrayList<Card> cards = new ArrayList<Card>();
 		cards.add(new Card(3, 'H'));
@@ -31,7 +31,7 @@ class CheckForTwoPairs {
 	}
 
 	@Test
-	void hasTwoPairs_threePairs11and6and3and3asKicker_True() {
+	void checkForTwoPairs_threePairs11and6and3and3asKicker_True() {
 		WinServiceImpl test = new WinServiceImpl();
 		ArrayList<Card> cards = new ArrayList<Card>();
 		cards.add(new Card(3, 'H'));
@@ -50,7 +50,7 @@ class CheckForTwoPairs {
 	}
 	
 	@Test
-	void hasTwoPairs_threePairs11and6and3and9asKicker_True() {
+	void checkForTwoPairs_threePairs11and6and3and9asKicker_True() {
 		WinServiceImpl test = new WinServiceImpl();
 		ArrayList<Card> cards = new ArrayList<Card>();
 		cards.add(new Card(3, 'H'));
@@ -69,7 +69,7 @@ class CheckForTwoPairs {
 	}
 	
 	@Test
-	void hasTwoPairs_noTwoPairs_False() {
+	void checkForTwoPairs_noTwoPairs_False() {
 		WinServiceImpl test = new WinServiceImpl();
 		ArrayList<Card> cards = new ArrayList<Card>();
 		cards.add(new Card(3, 'H'));
