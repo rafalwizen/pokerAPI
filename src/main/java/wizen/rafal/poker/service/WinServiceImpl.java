@@ -1,8 +1,6 @@
 package wizen.rafal.poker.service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map.Entry;
@@ -58,7 +56,7 @@ public class WinServiceImpl implements WinService {
 					kicker = (kicker >= entry.getKey())? kicker : entry.getKey();
 				}				
 			}
-			// 8 is value for four of a kind, also add 1 kicker
+			// 8 is value for four of a kind, also add value and 1 kicker
 			int[] result = {8, valueOfFourOfAKind, kicker};
 			return result;
 		}
@@ -96,9 +94,28 @@ public class WinServiceImpl implements WinService {
 		return result;
 	}
 	
-	private int[] checkForStraight(ArrayList<Card> cards) {
-		
-		
+	public int[] checkForStraight(ArrayList<Card> cards) {
+		boolean loopBreaker = false; // no more than 2 iterations if we have more than 1 Ace in hand
+		do {
+			if(loopBreaker) {cards.get(0).setValue(1);} // only if first card was Ace - change value to 1 for check small Straight
+			loopBreaker = !loopBreaker;
+			Collections.sort(cards);
+			int counter = 0;
+			int highestCard = 0;
+			for(int i = 0; i < cards.size()-1; i ++) {
+				if(cards.get(i).getValue()-1 == cards.get(i+1).getValue()){
+					highestCard = (counter==0) ? cards.get(i).getValue() : highestCard;
+					counter++;
+				} else {
+					counter = 0;
+				}
+				if(counter==4) {
+					// 5 is value for straight, also add heighest card
+					int[] result = {5, highestCard};
+					return result;
+				}
+			}			
+		} while(cards.get(0).isAce() && loopBreaker); 
 		int[] result = {0};
 		return result;
 	}
