@@ -34,9 +34,29 @@ public class WinServiceImpl implements WinService {
 	// kicker(s) - is a card in a hand that does not itself take part in determining the rank of the hand,
 	// but that may be used to break ties between hands of the same rank
 	
-	private int[] checkForStraightFlush(ArrayList<Card> cards) {
-		
-		
+	public int[] checkForStraightFlush(ArrayList<Card> cards) {
+		boolean loopBreaker = false; // no more than 2 iterations if we have more than 1 Ace in hand
+		do {
+			if(loopBreaker) {cards.get(0).setValue(1);} // only if first card was Ace - change value to 1 for check small StraightFlush
+			loopBreaker = !loopBreaker;
+			Collections.sort(cards);
+			int counter = 0;
+			int highestCard = 0;
+			for(int i = 0; i < cards.size()-1; i ++) {
+				if(cards.get(i).getValue()-1 == cards.get(i+1).getValue()
+				   && cards.get(i).getSuit() == cards.get(i+1).getSuit()) {
+					highestCard = (counter==0) ? cards.get(i).getValue() : highestCard;
+					counter++;
+				} else {
+					counter = 0;
+				}
+				if(counter==4) {
+					// 9 is value for straight flush, also add heighest card
+					int[] result = {9, highestCard};
+					return result;
+				}
+			}			
+		} while(cards.get(0).isAce() && loopBreaker); 
 		int[] result = {0};
 		return result;
 	}
