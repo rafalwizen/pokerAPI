@@ -75,13 +75,19 @@ public class WinServiceImpl implements WinService {
 		int pair = 0;
 		for (Entry<Integer, Integer> entry : hand.entrySet()) {
 			if(entry.getValue() == 3) {
-				tree2 = (entry.getKey() > tree1 && tree1 != 0) ? tree1 : entry.getKey();
-				tree1 = (entry.getKey() > tree1) ? entry.getKey() : tree1;
-			}
+				if(entry.getKey() > tree1 && tree1 != 0) {
+					tree2 = tree1;
+					tree1 = entry.getKey();
+				} else if (entry.getKey() > tree1) {
+					tree1 = entry.getKey();
+				} else if (entry.getKey() < tree1) {
+					tree2 = entry.getKey();
+				}
+			}			
 			if(entry.getValue() == 2) {
 				pair = (pair > entry.getKey()) ? pair : entry.getKey();
 			}
-		}	
+		}
 		// 7 is value for full house, also add 3 and 2 best cards
 		if(tree1 !=0 && tree2 != 0) {
 			int[] result = {7, tree1, tree2};

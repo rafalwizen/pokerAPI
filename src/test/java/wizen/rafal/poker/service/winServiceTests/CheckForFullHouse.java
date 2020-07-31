@@ -26,6 +26,7 @@ class CheckForFullHouse {
 		int[] expected = {7, 10, 8};
 		assertEquals(expected[0], output[0]);
 		assertEquals(expected[1], output[1]);
+		assertEquals(expected[2], output[2]);
 	}
 	
 	@Test
@@ -43,6 +44,7 @@ class CheckForFullHouse {
 		int[] expected = {7, 2, 14};
 		assertEquals(expected[0], output[0]);
 		assertEquals(expected[1], output[1]);
+		assertEquals(expected[2], output[2]);
 	}
 	
 	@Test
@@ -60,6 +62,7 @@ class CheckForFullHouse {
 		int[] expected = {7, 10, 8};
 		assertEquals(expected[0], output[0]);
 		assertEquals(expected[1], output[1]);
+		assertEquals(expected[2], output[2]);
 	}
 	
 	@Test
@@ -77,6 +80,7 @@ class CheckForFullHouse {
 		int[] expected = {7, 11, 7};
 		assertEquals(expected[0], output[0]);
 		assertEquals(expected[1], output[1]);
+		assertEquals(expected[2], output[2]);
 	}
 
 	@Test
