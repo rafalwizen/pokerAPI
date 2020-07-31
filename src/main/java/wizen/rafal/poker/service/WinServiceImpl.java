@@ -65,8 +65,31 @@ public class WinServiceImpl implements WinService {
 		return result;
 	}
 	
-	private int[] checkForFullHouse(ArrayList<Card> cards) {
-		
+	public int[] checkForFullHouse(ArrayList<Card> cards) {
+		HashMap <Integer, Integer> hand = new HashMap <Integer, Integer>();
+		for (Card card : cards) {
+			hand.merge(card.getValue(), 1, Integer::sum);
+		}
+		int tree1 = 0;
+		int tree2 = 0; // always lower than tree1
+		int pair = 0;
+		for (Entry<Integer, Integer> entry : hand.entrySet()) {
+			if(entry.getValue() == 3) {
+				tree2 = (entry.getKey() > tree1 && tree1 != 0) ? tree1 : entry.getKey();
+				tree1 = (entry.getKey() > tree1) ? entry.getKey() : tree1;
+			}
+			if(entry.getValue() == 2) {
+				pair = (pair > entry.getKey()) ? pair : entry.getKey();
+			}
+		}	
+		// 7 is value for full house, also add 3 and 2 best cards
+		if(tree1 !=0 && tree2 != 0) {
+			int[] result = {7, tree1, tree2};
+			return result;
+		} else if (tree1 != 0 && pair != 0) {
+			int[] result = {7, tree1, pair};
+			return result;
+		}
 		
 		int[] result = {0};
 		return result;
