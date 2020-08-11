@@ -14,8 +14,8 @@ public class Deck {
 
 	private ArrayList<Card> deck;
 	private ArrayList<Card> communityCards;
-	private ArrayList<Card> playersHand;
-	private ArrayList<ArrayList<Card>> opponentsHands;
+	private ArrayList<Card> playersPocket;
+	private ArrayList<ArrayList<Card>> opponentsPocket;
 	private int numberOfOpponents = 5;
 	
 	private Deck() {
@@ -47,17 +47,17 @@ public class Deck {
 	}
 	
 	public void dealCards() {
-		playersHand = new ArrayList<Card>();
+		playersPocket = new ArrayList<Card>();
 		// two cards for player
-		playersHand.add(getCardFromDeck());
-		playersHand.add(getCardFromDeck());
+		playersPocket.add(getCardFromDeck());
+		playersPocket.add(getCardFromDeck());
 		//two cards for each of opponents
-		opponentsHands = new ArrayList<ArrayList<Card>>();
+		opponentsPocket = new ArrayList<ArrayList<Card>>();
 		for(int i =0; i < numberOfOpponents; i++) {
 			ArrayList<Card> tempList = new ArrayList<Card>();
 			tempList.add(getCardFromDeck());
 			tempList.add(getCardFromDeck());
-			opponentsHands.add(tempList);
+			opponentsPocket.add(tempList);
 		}
 	}
 	

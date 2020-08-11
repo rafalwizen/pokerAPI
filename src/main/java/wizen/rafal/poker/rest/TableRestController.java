@@ -25,5 +25,8 @@ public class TableRestController {
 		return tableService.getAllCards();
 	}
 	
-	 
+	@GetMapping("/winner")
+	public String[] getWinner() {
+		return tableService.getWinner();
+	} 
 }

@@ -1,6 +1,7 @@
 package wizen.rafal.poker.service;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map.Entry;
@@ -15,26 +16,81 @@ public class WinServiceImpl implements WinService {
 
 	Deck deck = Deck.getInstance();
 	
-	private int[] valueOfPlayersHand;
-	private int[] valueOfOpponentsHand;
-	
 	@Override
-	public void winCheck() {
-		// TODO Auto-generated method stub
+	public String[] winCheck() {
+		HashMap <String, int[]> valuesOfHands = new HashMap <String, int[]>();
 		
+		int[] valueOfPlayersHand;
+		ArrayList<Card> playersCards = deck.getCommunityCards();
+		playersCards.addAll(deck.getPlayersPocket());
+		valueOfPlayersHand = checkHandAndValue(playersCards);
+		valuesOfHands.put("player", valueOfPlayersHand);
+		
+		int[][] valueOfOpponentsHands = new int[deck.getOpponentsPocket().size()][6];
+
+		for (int i = 0; i < deck.getOpponentsPocket().size(); i++) {
+			ArrayList<Card> opponentCards = deck.getCommunityCards();
+			opponentCards.addAll(deck.getOpponentsPocket().get(i));
+			valueOfOpponentsHands[i] = checkHandAndValue(opponentCards);
+			valuesOfHands.put("opponent " + i, valueOfOpponentsHands[i]);
+		}
+		
+		// add logic to tie next time ...
+		//ArrayList<Integer> bestHand1 = new ArrayList<Integer>();
+		//ArrayList<String> bestPlayer1 = new ArrayList<String>();
+		int[] bestHand = {0, 0, 0, 0, 0, 0};
+		String[] bestPlayer = new String[6];
+		int numberOfTies = 0;
+		for (Entry <String, int[]> entry : valuesOfHands.entrySet()) {
+			int temp[] = entry.getValue();
+			for(int i = 0; i < 6; i++) {
+				if (temp[i] > bestHand[i]) {
+					numberOfTies = 0;
+					Arrays.fill(bestPlayer, "");
+					bestHand = temp;
+					bestPlayer[0] = entry.getKey();
+					break;
+				} else if (temp[i] < bestHand[i]) {
+					break;
+				}
+				if(i == 5) {
+					numberOfTies++;
+					bestPlayer[numberOfTies] = entry.getKey();
+				}
+			}
+		}
+		return bestPlayer;
 	}
 	
 	private int[] checkHandAndValue(ArrayList<Card> cards) {
-		int[] tempValue = new int[6];
-	
-		return tempValue;
+		int[] result;
+		result = checkForStraightFlush(cards);
+		if (result[0] != 0) return result;
+		result = checkForFourOfAKind(cards);
+		if (result[0] != 0) return result;
+		result = checkForFullHouse(cards);
+		if (result[0] != 0) return result;
+		result = checkForFlush(cards);
+		if (result[0] != 0) return result;
+		result = checkForStraight(cards);
+		if (result[0] != 0) return result;
+		result = checkForThreeOfAKind(cards);
+		if (result[0] != 0) return result;
+		result = checkForTwoPairs(cards);
+		if (result[0] != 0) return result;
+		result = checkForOnePair(cards);
+		if (result[0] != 0) return result;
+		result = checkForHeighestCard(cards);	
+		return result;
 	}
 	
 	// methods for check each possible variant
+	// every private method returns table of integers with size 6.
+	
 	// kicker(s) - is a card in a hand that does not itself take part in determining the rank of the hand,
 	// but that may be used to break ties between hands of the same rank
 	
-	public int[] checkForStraightFlush(ArrayList<Card> cards) {
+	private int[] checkForStraightFlush(ArrayList<Card> cards) {
 		boolean loopBreaker = false; // no more than 2 iterations if we have more than 1 Ace in hand
 		do {
 			if(loopBreaker) {cards.get(0).setValue(1);} // only if first card was Ace - change value to 1 for check small StraightFlush
@@ -51,8 +107,8 @@ public class WinServiceImpl implements WinService {
 					counter = 0;
 				}
 				if(counter==4) {
-					// 9 is value for straight flush, also add heighest card
-					int[] result = {9, highestCard};
+					// 9 is value for straight flush, also add heighest card and 4x 0 to get same size of methods results
+					int[] result = {9, highestCard, 0, 0, 0, 0};
 					return result;
 				}
 			}			
@@ -61,7 +117,7 @@ public class WinServiceImpl implements WinService {
 		return result;
 	}
 	
-	public int[] checkForFourOfAKind(ArrayList<Card> cards) {
+	private int[] checkForFourOfAKind(ArrayList<Card> cards) {
 		HashMap<Integer, Integer> hand = new HashMap<Integer, Integer>();
 		for(Card card : cards) {
 			hand.merge(card.getValue(), 1, Integer::sum);
@@ -76,8 +132,8 @@ public class WinServiceImpl implements WinService {
 					kicker = (kicker >= entry.getKey())? kicker : entry.getKey();
 				}				
 			}
-			// 8 is value for four of a kind, also add value and 1 kicker
-			int[] result = {8, valueOfFourOfAKind, kicker};
+			// 8 is value for four of a kind, also add value and 1 kicker and 3x 0 to get same size of methods results
+			int[] result = {8, valueOfFourOfAKind, kicker, 0, 0, 0};
 			return result;
 		}
 		
@@ -85,7 +141,7 @@ public class WinServiceImpl implements WinService {
 		return result;
 	}
 	
-	public int[] checkForFullHouse(ArrayList<Card> cards) {
+	private int[] checkForFullHouse(ArrayList<Card> cards) {
 		HashMap <Integer, Integer> hand = new HashMap <Integer, Integer>();
 		for (Card card : cards) {
 			hand.merge(card.getValue(), 1, Integer::sum);
@@ -108,12 +164,12 @@ public class WinServiceImpl implements WinService {
 				pair = (pair > entry.getKey()) ? pair : entry.getKey();
 			}
 		}
-		// 7 is value for full house, also add 3 and 2 best cards
+		// 7 is value for full house, also add 3 and 2 best cards and 3x 0 to get same size of methods results
 		if(tree1 !=0 && tree2 != 0) {
-			int[] result = {7, tree1, tree2};
+			int[] result = {7, tree1, tree2, 0, 0, 0};
 			return result;
 		} else if (tree1 != 0 && pair != 0) {
-			int[] result = {7, tree1, pair};
+			int[] result = {7, tree1, pair, 0, 0, 0};
 			return result;
 		}
 		
@@ -121,7 +177,7 @@ public class WinServiceImpl implements WinService {
 		return result;
 	}
 	
-	public int[] checkForFlush(ArrayList<Card> cards) {
+	private int[] checkForFlush(ArrayList<Card> cards) {
 		HashMap<Character, ArrayList<Card>> hand = new HashMap<Character, ArrayList<Card>>();
 		for(Card card : cards) {
 			if(hand.get(card.getSuit())==null) {
@@ -143,7 +199,7 @@ public class WinServiceImpl implements WinService {
 		return result;
 	}
 	
-	public int[] checkForStraight(ArrayList<Card> cards) {
+	private int[] checkForStraight(ArrayList<Card> cards) {
 		boolean loopBreaker = false; // no more than 2 iterations if we have more than 1 Ace in hand
 		do {
 			if(loopBreaker) {cards.get(0).setValue(1);} // only if first card was Ace - change value to 1 for check small Straight
@@ -159,8 +215,8 @@ public class WinServiceImpl implements WinService {
 					counter = 0;
 				}
 				if(counter==4) {
-					// 5 is value for straight, also add heighest card
-					int[] result = {5, highestCard};
+					// 5 is value for straight, also add heighest card and 4x 0 to get same size of methods results
+					int[] result = {5, highestCard, 0, 0, 0, 0};
 					return result;
 				}
 			}			
@@ -169,7 +225,7 @@ public class WinServiceImpl implements WinService {
 		return result;
 	}
 	
-	public int[] checkForThreeOfAKind(ArrayList<Card> cards) {
+	private int[] checkForThreeOfAKind(ArrayList<Card> cards) {
 		HashMap<Integer, Integer> hand = new HashMap<Integer, Integer>();
 		for(Card card : cards) {
 			hand.merge(card.getValue(), 1, Integer::sum);
@@ -190,8 +246,8 @@ public class WinServiceImpl implements WinService {
 					}
 				}
 			}
-			// 4 is value for three of a kind, also add 2 kickers
-			int[] result = {4, valueOfThreeOfAKind, kicker1, kicker2};
+			// 4 is value for three of a kind, also add 2 kickers and 2x 0 to get same size of methods results
+			int[] result = {4, valueOfThreeOfAKind, kicker1, kicker2, 0, 0};
 			return result;
 		}
 		
@@ -199,7 +255,7 @@ public class WinServiceImpl implements WinService {
 		return result;
 	}
 	
-	public int[] checkForTwoPairs(ArrayList<Card> cards) {
+	private int[] checkForTwoPairs(ArrayList<Card> cards) {
 		HashMap<Integer, Integer> hand = new HashMap<Integer, Integer>();
 		for(Card card : cards) {
 			hand.merge(card.getValue(), 1, Integer::sum);
@@ -224,15 +280,15 @@ public class WinServiceImpl implements WinService {
 		}
 		kicker = (kicker > pair3) ? kicker : pair3;
 		if(pair2 != 0) {
-			// 3 is value for two pairs, also add kicker
-			int[] result = {3, pair1, pair2, kicker};
+			// 3 is value for two pairs, also add kicker and 2x 0 to get same size of methods results
+			int[] result = {3, pair1, pair2, kicker, 0, 0};
 			return result;
 		}
 		int[] result = {0};
 		return result;
 	}
 	
-	public int[] checkForOnePair(ArrayList<Card> cards) {
+	private int[] checkForOnePair(ArrayList<Card> cards) {
 		HashMap<Integer, Integer> hand = new HashMap<Integer, Integer>();
 		for(Card card : cards) {
 			hand.merge(card.getValue(), 1, Integer::sum);
@@ -256,17 +312,17 @@ public class WinServiceImpl implements WinService {
 			}
 		}
 		if(pair!=0) {
-			// 2 is value for pair, also add 3 kickers
-			int[] result = {2, pair, kicker1, kicker2, kicker3};
+			// 2 is value for pair, also add 3 kickers and 1x 0 to get same size of methods results
+			int[] result = {2, pair, kicker1, kicker2, kicker3, 0};
 			return result;
 		}
 		int[] result = {0};
 		return result;
 	}
 	
-	public int[] checkForHeighestCard(ArrayList<Card> cards) {
+	private int[] checkForHeighestCard(ArrayList<Card> cards) {
 		Collections.sort(cards);
-		// 1 is value for highest pair
+		// 1 is value for highest pair also add 5 best cards
 		int[] result = {1, cards.get(0).getValue(), cards.get(1).getValue(), cards.get(2).getValue(),
 						   cards.get(3).getValue(), cards.get(4).getValue()};
 
