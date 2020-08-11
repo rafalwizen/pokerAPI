@@ -21,7 +21,8 @@ public class WinServiceImpl implements WinService {
 		HashMap <String, int[]> valuesOfHands = new HashMap <String, int[]>();
 		
 		int[] valueOfPlayersHand;
-		ArrayList<Card> playersCards = deck.getCommunityCards();
+		ArrayList<Card> playersCards = new ArrayList<Card>();
+		playersCards.addAll(deck.getCommunityCards());
 		playersCards.addAll(deck.getPlayersPocket());
 		valueOfPlayersHand = checkHandAndValue(playersCards);
 		valuesOfHands.put("player", valueOfPlayersHand);
@@ -29,15 +30,13 @@ public class WinServiceImpl implements WinService {
 		int[][] valueOfOpponentsHands = new int[deck.getOpponentsPocket().size()][6];
 
 		for (int i = 0; i < deck.getOpponentsPocket().size(); i++) {
-			ArrayList<Card> opponentCards = deck.getCommunityCards();
+			ArrayList<Card> opponentCards = new ArrayList<Card>();
+			opponentCards.addAll(deck.getCommunityCards());
 			opponentCards.addAll(deck.getOpponentsPocket().get(i));
 			valueOfOpponentsHands[i] = checkHandAndValue(opponentCards);
 			valuesOfHands.put("opponent " + i, valueOfOpponentsHands[i]);
 		}
 		
-		// add logic to tie next time ...
-		//ArrayList<Integer> bestHand1 = new ArrayList<Integer>();
-		//ArrayList<String> bestPlayer1 = new ArrayList<String>();
 		int[] bestHand = {0, 0, 0, 0, 0, 0};
 		String[] bestPlayer = new String[6];
 		int numberOfTies = 0;
@@ -59,6 +58,12 @@ public class WinServiceImpl implements WinService {
 				}
 			}
 		}
+//		for(String p : bestPlayer) {
+//			System.out.println(p);
+//		}
+//		for (int i : bestHand) {
+//			System.out.println(i);
+//		}
 		return bestPlayer;
 	}
 	
