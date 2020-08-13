@@ -109,6 +109,8 @@ public class WinServiceImpl implements WinService {
 					highestCard = (counter==0) ? cards.get(i).getValue() : highestCard;
 					counter++;
 				
+				} else if (cards.get(i).getValue() == cards.get(i+1).getValue()) {
+					continue;
 				} else {
 					counter = 0;
 				}

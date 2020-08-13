@@ -193,4 +193,61 @@ class winCheck {
 		assertEquals(expected[1], output[1]);
 		assertEquals(expected[2], output[2]);
 	}
+	
+	@Test
+	void winCheck_Opp3Win_StraightFlush_True() {
+		WinServiceImpl test = new WinServiceImpl();
+		communityCards = new ArrayList<Card>();
+		playerPocket = new ArrayList<Card>();
+		opponentsPocket = new ArrayList<ArrayList<Card>>();
+		numberOfOpponents = 5;
+		
+		// add community cards
+		communityCards.add(new Card(8, 'S'));
+		communityCards.add(new Card(7, 'S'));
+		communityCards.add(new Card(7, 'C')); 
+		communityCards.add(new Card(5, 'S'));
+		communityCards.add(new Card(2, 'C'));
+		
+		// add player cards
+		playerPocket.add(new Card(6, 'D'));
+		playerPocket.add(new Card(9, 'C'));
+		
+		// add opponent 1 cards
+		ArrayList<Card> tempList = new ArrayList<Card>();
+		tempList.add(new Card(14, 'H'));
+		tempList.add(new Card(10, 'H'));
+		opponentsPocket.add(tempList);
+		
+		// add opponent 2 cards
+		tempList = new ArrayList<Card>();
+		tempList.add(new Card(9, 'D'));
+		tempList.add(new Card(6, 'C'));
+		opponentsPocket.add(tempList);
+				
+		// add opponent 3 cards
+		tempList = new ArrayList<Card>();
+		tempList.add(new Card(6, 'S'));
+		tempList.add(new Card(4, 'S'));
+		opponentsPocket.add(tempList);
+		
+		// add opponent 4 cards
+		tempList = new ArrayList<Card>();
+		tempList.add(new Card(4, 'H'));
+		tempList.add(new Card(5, 'H'));
+		opponentsPocket.add(tempList);
+				
+		// add opponent 5 cards
+		tempList = new ArrayList<Card>();
+		tempList.add(new Card(14, 'H'));
+		tempList.add(new Card(9, 'H'));
+		opponentsPocket.add(tempList);
+
+		Deck deck = new DeckForTests(communityCards, playerPocket, opponentsPocket);
+		
+		String[] output = test.winCheck(deck);
+		String[] expected = {"opponent 3"};
+		
+		assertEquals(expected[0], output[0]);
+	}
 }
