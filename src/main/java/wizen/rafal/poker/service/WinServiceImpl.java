@@ -59,6 +59,11 @@ public class WinServiceImpl implements WinService {
 			}
 		}
 		Arrays.sort(bestPlayer, Collections.reverseOrder());
+		
+		// for tests purposes
+//		for( int temp : bestHand) {
+//			System.out.println(temp);
+//		}
 		return bestPlayer;
 	}
 	
@@ -103,6 +108,7 @@ public class WinServiceImpl implements WinService {
 				   && cards.get(i).getSuit() == cards.get(i+1).getSuit()) {
 					highestCard = (counter==0) ? cards.get(i).getValue() : highestCard;
 					counter++;
+				
 				} else {
 					counter = 0;
 				}
@@ -212,6 +218,8 @@ public class WinServiceImpl implements WinService {
 				if(cards.get(i).getValue()-1 == cards.get(i+1).getValue()){
 					highestCard = (counter==0) ? cards.get(i).getValue() : highestCard;
 					counter++;
+				} else if (cards.get(i).getValue() == cards.get(i+1).getValue()) {
+					continue;
 				} else {
 					counter = 0;
 				}
