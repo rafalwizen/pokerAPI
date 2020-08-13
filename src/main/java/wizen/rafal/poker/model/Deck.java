@@ -18,15 +18,20 @@ public class Deck {
 	private ArrayList<ArrayList<Card>> opponentsPocket;
 	private int numberOfOpponents = 5;
 	
-	private Deck() {
+	// in future it's going to be probably a singleton - already all logic methods has to be tested
+	public Deck() {
 		newDeal();
 	}
 	
-	private static final Deck INSTANCE = new Deck();
-	
-	public static Deck getInstance() {
-		return INSTANCE;
-	}
+//	private Deck() {
+//		newDeal();
+//	}
+//	
+//	private static final Deck INSTANCE = new Deck();
+//	
+//	public static Deck getInstance() {
+//		return INSTANCE;
+//	}
 	
 	public void newDeal() {
 		newDeck();

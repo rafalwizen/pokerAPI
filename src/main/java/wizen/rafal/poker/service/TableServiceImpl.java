@@ -8,7 +8,8 @@ import wizen.rafal.poker.model.Deck;
 @Service
 public class TableServiceImpl implements TableService {
 
-	Deck deck = Deck.getInstance();
+	Deck deck = new Deck();
+	//Deck deck = Deck.getInstance();
 	
 	@Autowired
 	WinService winService;
@@ -26,7 +27,7 @@ public class TableServiceImpl implements TableService {
 
 	@Override
 	public String[] getWinner() {
-		return winService.winCheck();
+		return winService.winCheck(deck);
 	}
 
 	

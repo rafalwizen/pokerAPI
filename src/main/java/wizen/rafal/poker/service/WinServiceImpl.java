@@ -14,10 +14,10 @@ import wizen.rafal.poker.model.Deck;
 @Service
 public class WinServiceImpl implements WinService {
 
-	Deck deck = Deck.getInstance();
+	//Deck deck = Deck.getInstance();
 	
 	@Override
-	public String[] winCheck() {
+	public String[] winCheck(Deck deck) {
 		HashMap <String, int[]> valuesOfHands = new HashMap <String, int[]>();
 		
 		int[] valueOfPlayersHand;
@@ -34,7 +34,7 @@ public class WinServiceImpl implements WinService {
 			opponentCards.addAll(deck.getCommunityCards());
 			opponentCards.addAll(deck.getOpponentsPocket().get(i));
 			valueOfOpponentsHands[i] = checkHandAndValue(opponentCards);
-			valuesOfHands.put("opponent " + i, valueOfOpponentsHands[i]);
+			valuesOfHands.put("opponent " + (i+1), valueOfOpponentsHands[i]);
 		}
 		
 		int[] bestHand = {0, 0, 0, 0, 0, 0};
@@ -58,12 +58,7 @@ public class WinServiceImpl implements WinService {
 				}
 			}
 		}
-//		for(String p : bestPlayer) {
-//			System.out.println(p);
-//		}
-//		for (int i : bestHand) {
-//			System.out.println(i);
-//		}
+		System.out.println(bestHand[0]);
 		return bestPlayer;
 	}
 	
@@ -116,8 +111,9 @@ public class WinServiceImpl implements WinService {
 					int[] result = {9, highestCard, 0, 0, 0, 0};
 					return result;
 				}
-			}			
-		} while(cards.get(0).isAce() && loopBreaker); 
+			}
+		} while(cards.get(0).isAce() && loopBreaker);
+		if(cards.get(6).isAce()) {cards.get(6).setValue(14);}
 		int[] result = {0};
 		return result;
 	}
@@ -226,7 +222,8 @@ public class WinServiceImpl implements WinService {
 				}
 			}			
 		} while(cards.get(0).isAce() && loopBreaker); 
-		int[] result = {0};
+		if(cards.get(6).isAce()) {cards.get(6).setValue(14);}
+		int[] result = {0};	
 		return result;
 	}
 	
