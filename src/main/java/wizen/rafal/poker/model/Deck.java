@@ -12,11 +12,11 @@ import lombok.ToString;
 @ToString
 public class Deck {
 
-	private ArrayList<Card> deck;
-	private ArrayList<Card> communityCards;
-	private ArrayList<Card> playersPocket;
-	private ArrayList<ArrayList<Card>> opponentsPocket;
-	private int numberOfOpponents = 5;
+	protected ArrayList<Card> deck;
+	protected ArrayList<Card> communityCards;
+	protected ArrayList<Card> playersPocket;
+	protected ArrayList<ArrayList<Card>> opponentsPocket;
+	protected int numberOfOpponents = 5;
 	
 	// in future it's going to be probably a singleton - already all logic methods has to be tested
 	public Deck() {
@@ -41,7 +41,7 @@ public class Deck {
 		dealRiver();
 	}
 	
-	public void newDeck() {
+	private void newDeck() {
 		deck = new ArrayList<Card>();
 		for(int i = 2; i <= 14; i++) {
 			deck.add(new Card(i , 'H'));
@@ -51,7 +51,7 @@ public class Deck {
 		}
 	}
 	
-	public void dealCards() {
+	private void dealCards() {
 		playersPocket = new ArrayList<Card>();
 		// two cards for player
 		playersPocket.add(getCardFromDeck());

@@ -58,7 +58,7 @@ public class WinServiceImpl implements WinService {
 				}
 			}
 		}
-		System.out.println(bestHand[0]);
+		Arrays.sort(bestPlayer, Collections.reverseOrder());
 		return bestPlayer;
 	}
 	
